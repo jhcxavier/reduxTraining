@@ -1,46 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import * as courseActions from "../../redux/actions/courseActions";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
+import CourseList from "./CourseList";
+// import courseReducer from "../../redux/reducers/courseReducer";
 
-class CoursesPage extends React.Component {
-  state = {
-    course: {
-      title: "",
-    },
-  };
+const CoursesPage = (props) => {
+  // componentDidMount() {
+  //   this.props.actions.loadCourses().catch((error) => {
+  //     debugger;
+  //     alert("Loading Courses Failed" + error);
+  //   });
+  // }
+  useEffect(() => {
+    props.actions.loadCourses().catch((error) => {
+      alert("Loading Courses Failed " + error);
+    });
+  });
+  return (
+    <>
+      <h2>Courses</h2>
+      <CourseList courses={props.courses} />
 
-  handleChange = (event) => {
-    const course = { ...this.state.course, title: event.target.value };
-    this.setState({ course });
-  };
-
-  handleSubmit = (event) => {
-    event.preventDefault();
-
-    this.props.actions.createCourse(this.state.course);
-  };
-
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <h2>Courses</h2>
-        <h3>Add Course</h3>
-        <input
-          type="text"
-          onChange={this.handleChange}
-          value={this.state.course.title}
-        />
-
-        <input type="submit" value="Save" />
-        {this.props.courses.map((course, index) => (
+      {props.courses &&
+        props.courses.map((course, index) => (
           <div key={index}>{course.title}</div>
         ))}
-      </form>
-    );
-  }
-}
+    </>
+  );
+};
 
 CoursesPage.propTypes = {
   courses: PropTypes.array.isRequired,
@@ -48,6 +37,8 @@ CoursesPage.propTypes = {
 };
 
 function mapStateToProps(state) {
+  console.log("state", state.courses);
+  debugger;
   return {
     courses: state.courses,
   };
