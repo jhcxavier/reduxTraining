@@ -10,7 +10,6 @@ export function loadCoursesSuccess(courses) {
 }
 
 export function loadCourses() {
-  debugger;
   return function (dispatch) {
     return courseApi
 

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import * as courseActions from "../../redux/actions/courseActions";
+import * as authorActions from "../../redux/actions/authorActions";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import CourseList from "./CourseList";
@@ -9,24 +10,22 @@ import CourseList from "./CourseList";
 const CoursesPage = (props) => {
   // componentDidMount() {
   //   this.props.actions.loadCourses().catch((error) => {
-  //     debugger;
+
   //     alert("Loading Courses Failed" + error);
   //   });
   // }
   useEffect(() => {
     props.actions.loadCourses().catch((error) => {
-      alert("Loading Courses Failed " + error);
+      alert("Hello Moto " + error);
     });
-  });
+    props.actions.loadAuthors().catch((error) => {
+      alert("Hello Moto " + error);
+    });
+  }, []);
   return (
     <>
       <h2>Courses</h2>
       <CourseList courses={props.courses} />
-
-      {props.courses &&
-        props.courses.map((course, index) => (
-          <div key={index}>{course.title}</div>
-        ))}
     </>
   );
 };
@@ -38,7 +37,7 @@ CoursesPage.propTypes = {
 
 function mapStateToProps(state) {
   console.log("state", state.courses);
-  debugger;
+
   return {
     courses: state.courses,
   };
@@ -46,7 +45,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(courseActions, dispatch),
+    actions: {
+      loadCourses: bindActionCreators(courseActions.loadCourses, dispatch),
+      loadAuthors: bindActionCreators(authorActions.loadAuthors, dispatch),
+    },
   };
 }
 
