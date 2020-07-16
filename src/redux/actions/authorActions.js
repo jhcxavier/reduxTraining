@@ -13,7 +13,7 @@ export function loadAuthors() {
     return authorApi
       .getAuthors()
       .then((authors) => {
-        console.log("author", authors), dispatch(loadAuthorsSuccess(authors));
+        dispatch(loadAuthorsSuccess(authors));
       })
       .catch((error) => {
         throw error;

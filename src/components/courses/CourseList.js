@@ -13,7 +13,7 @@ const CourseList = ({ courses }) => (
       </tr>
     </thead>
     <tbody>
-      {console.log("hello", courses)}
+      {/* {console.log("hello", courses)} */}
       {courses.map((course, index) => {
         return (
           <tr key={index}>

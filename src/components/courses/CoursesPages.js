@@ -15,12 +15,17 @@ const CoursesPage = (props) => {
   //   });
   // }
   useEffect(() => {
-    props.actions.loadCourses().catch((error) => {
-      alert("Hello Moto " + error);
-    });
-    props.actions.loadAuthors().catch((error) => {
-      alert("Hello Moto " + error);
-    });
+    const { courses, actions, authors } = props;
+    if (courses.length === 0) {
+      actions.loadCourses().catch((error) => {
+        alert("Hello Moto " + error);
+      });
+    }
+    if (authors.length == 0) {
+      actions.loadAuthors().catch((error) => {
+        alert("Hello Moto " + error);
+      });
+    }
   }, []);
   return (
     <>
@@ -31,6 +36,7 @@ const CoursesPage = (props) => {
 };
 
 CoursesPage.propTypes = {
+  authors: PropTypes.array.isRequired,
   courses: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
 };
@@ -39,7 +45,17 @@ function mapStateToProps(state) {
   console.log("state", state.courses);
 
   return {
-    courses: state.courses,
+    courses:
+      state.authors.length === 0
+        ? []
+        : state.courses.map((course) => {
+            return {
+              ...course,
+              authorName: state.authors.find((a) => a.id === course.authorId)
+                .name,
+            };
+          }),
+    authors: state.authors,
   };
 }
 
